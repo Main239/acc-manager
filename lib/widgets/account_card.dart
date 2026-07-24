@@ -22,6 +22,7 @@ class AccountCard extends StatelessWidget {
     final isLogged = account.isLoggedIn;
     final borderColor = isLogged ? Colors.green : colorScheme.outlineVariant.withValues(alpha: 0.5);
     final bgColor = isLogged ? Colors.green.withValues(alpha: 0.06) : colorScheme.surface;
+    final accent = isLogged ? Colors.green : colorScheme.primary;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -40,8 +41,7 @@ class AccountCard extends StatelessWidget {
               child: Text(
                 account.accountName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: isLogged ? Colors.green.shade700 : colorScheme.primary,
+                      fontWeight: FontWeight.bold, color: accent,
                     ),
               ),
             ),
@@ -77,8 +77,7 @@ class AccountCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 32,
-        height: 32,
+        width: 32, height: 32,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isLogged ? Colors.green : Colors.red.withValues(alpha: 0.3),
