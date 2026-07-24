@@ -1,76 +1,48 @@
 import '../database/database_helper.dart';
 import '../models/category.dart';
 
-/// Service quản lý các thao tác CRUD cho Category.
 class CategoryService {
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
-  // ── CREATE ──
-
-  /// Tạo một category mới, trả về id của category vừa tạo.
-  Future<int> createCategory({required String name}) async {
+  Future<int> createCategory({required String name, int? parentId}) async {
     final db = await _dbHelper.database;
-
-    final category = Category(
-      name: name,
-      createdAt: DateTime.now(),
-    );
-
+    final category = Category(name: name, parentId: parentId, createdAt: DateTime.now());
     return await db.insert('categories', category.toMap());
   }
 
-  // ── READ ──
+  Future<List<Category>> getRootCategories() async {
+    final db = await _dbHelper.database;
+    final maps = await db.query('categories', where: 'parent_id IS NULL', orderBy: 'created_at DESC');
+    return maps.map((m) => Category.fromMap(m)).toList();
+  }
 
-  /// Lấy tất cả categories, sắp xếp theo thời gian tạo (mới nhất trước).
+  Future<List<Category>> getSubCategories({required int parentId}) async {
+    final db = await _dbHelper.database;
+    final maps = await db.query('categories', where: 'parent_id = ?', whereArgs: [parentId], orderBy: 'created_at DESC');
+    return maps.map((m) => Category.fromMap(m)).toList();
+  }
+
   Future<List<Category>> getAllCategories() async {
     final db = await _dbHelper.database;
-
-    final List<Map<String, dynamic>> maps = await db.query(
-      'categories',
-      orderBy: 'created_at DESC',
-    );
-
-    return maps.map((map) => Category.fromMap(map)).toList();
+    final maps = await db.query('categories', orderBy: 'created_at DESC');
+    return maps.map((m) => Category.fromMap(m)).toList();
   }
 
-  /// Tìm kiếm categories theo tên.
   Future<List<Category>> searchCategories({required String query}) async {
     final db = await _dbHelper.database;
-
-    final List<Map<String, dynamic>> maps = await db.query(
-      'categories',
-      where: 'name LIKE ?',
-      whereArgs: ['%$query%'],
-      orderBy: 'created_at DESC',
-    );
-
-    return maps.map((map) => Category.fromMap(map)).toList();
+    final maps = await db.query('categories', where: 'name LIKE ?', whereArgs: ['%$query%'], orderBy: 'created_at DESC');
+    return maps.map((m) => Category.fromMap(m)).toList();
   }
 
-  // ── UPDATE ──
-
-  /// Cập nhật tên category.
   Future<int> updateCategory({required int id, required String name}) async {
     final db = await _dbHelper.database;
-
-    return await db.update(
-      'categories',
-      {'name': name},
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.update('categories', {'name': name}, where: 'id = ?', whereArgs: [id]);
   }
 
-  // ── DELETE ──
-
-  /// Xóa một category (và tất cả accounts thuộc category đó nhờ ON DELETE CASCADE).
   Future<int> deleteCategory({required int id}) async {
     final db = await _dbHelper.database;
-
-    // Xóa tất cả accounts thuộc category này trước
     await db.delete('accounts', where: 'category_id = ?', whereArgs: [id]);
-
-    // Xóa category
+    await db.delete('categories', where: 'parent_id = ?', whereArgs: [id]);
     return await db.delete('categories', where: 'id = ?', whereArgs: [id]);
   }
 }
