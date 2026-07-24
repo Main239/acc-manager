@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
 
   final TextEditingController _searchController = TextEditingController();
-  bool _isSearching = false;
 
   @override
   void initState() {
@@ -126,13 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Quản Lý Tài Khoản',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onPrimaryContainer,
-          ),
-        ),
+        title: const SizedBox.shrink(),
         backgroundColor: colorScheme.primaryContainer,
         elevation: 0,
       ),
@@ -181,12 +174,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       : ListView.builder(
                           padding: const EdgeInsets.only(
                             top: 8,
-                            bottom: 100, // Để không bị FAB che
+                            bottom: 100,
                           ),
                           itemCount: _filteredCategories.length,
                           itemBuilder: (context, index) {
                             final category = _filteredCategories[index];
-                            return _buildCategoryTile(category, index);
+                            return _buildCategoryTile(category);
                           },
                         ),
                 ),
@@ -244,86 +237,82 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Mỗi category được hiển thị như một ListTile với icon folder.
-  Widget _buildCategoryTile(Category category, int index) {
+  /// Mỗi category được hiển thị như một Card với ListTile.
+  Widget _buildCategoryTile(Category category) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
+    return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: Card(
-        elevation: 0,
-        color: colorScheme.surfaceContainerLow,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+      elevation: 0,
+      color: colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        leading: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(
+            Icons.folder_rounded,
+            color: colorScheme.onPrimaryContainer,
+            size: 24,
+          ),
         ),
-        child: ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          leading: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(
-              Icons.folder_rounded,
-              color: colorScheme.onPrimaryContainer,
-              size: 24,
-            ),
-          ),
-          title: Text(
-            category.name,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          subtitle: Text(
-            'Tạo ngày ${_formatDate(category.createdAt)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-          ),
-          trailing: PopupMenuButton<String>(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            onSelected: (value) {
-              if (value == 'edit') {
-                _showEditCategoryDialog(category);
-              } else if (value == 'delete') {
-                _showDeleteCategoryDialog(category);
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'edit',
-                child: Row(
-                  children: [
-                    Icon(Icons.edit_outlined, size: 20),
-                    SizedBox(width: 12),
-                    Text('Sửa'),
-                  ],
-                ),
+        title: Text(
+          category.name,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
               ),
-              const PopupMenuItem(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_outline, size: 20, color: Colors.red),
-                    SizedBox(width: 12),
-                    Text('Xóa', style: TextStyle(color: Colors.red)),
-                  ],
-                ),
+        ),
+        subtitle: Text(
+          'Tạo ngày ${_formatDate(category.createdAt)}',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
-            ],
-          ),
-          onTap: () => _openCategoryDetail(category),
+        ),
+        trailing: PopupMenuButton<String>(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
+          onSelected: (value) {
+            if (value == 'edit') {
+              _showEditCategoryDialog(category);
+            } else if (value == 'delete') {
+              _showDeleteCategoryDialog(category);
+            }
+          },
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'edit',
+              child: Row(
+                children: [
+                  Icon(Icons.edit_outlined, size: 20),
+                  SizedBox(width: 12),
+                  Text('Sửa'),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'delete',
+              child: Row(
+                children: [
+                  Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                  SizedBox(width: 12),
+                  Text('Xóa', style: TextStyle(color: Colors.red)),
+                ],
+              ),
+            ),
+          ],
+        ),
+        onTap: () => _openCategoryDetail(category),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
     );
