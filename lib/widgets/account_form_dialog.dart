@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../models/account.dart';
 
-/// DŻວ liệu trả về từ AccountFormDialog.
+/// Dů liệu tr᫣ về từ AccountFormDialog.
 class AccountFormData {
-  final String accountName;
+  final String? accountName;
   final String username;
   final String password;
   final String? note;
 
   const AccountFormData({
-    required this.accountName,
+    this.accountName,
     required this.username,
     required this.password,
     this.note,
@@ -19,7 +19,7 @@ class AccountFormData {
 
 /// Dialog / BottomSheet form thêm mới hoặc sửa tài khoản.
 /// [existingAccount] được truyền vào khi sửa, null khi tạo mới.
-/// Trả về AccountFormData nếu người dùng bẹn Lưu, null neếu h�'y.
+/// Trả về AccountFormData nếu người dùng bấn Lưu, null nếu h�'y.
 Future<AccountFormData?> showAccountFormDialog({
   required BuildContext context,
   Account? existingAccount,
@@ -55,7 +55,7 @@ Future<AccountFormData?> showAccountFormDialog({
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // └─ Handle indicator └─
+              // ── Handle indicator ──
               Center(
                 child: Container(
                   width: 40,
@@ -72,9 +72,9 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 20),
 
-              // └─ Title └─
+              // ── Title ──
               Text(
-                isEditing ? 'SŻa tài khoản' : 'Thêm tài khoản',
+                isEditing ? 'SŻ�a tài khoản' : 'Thêm tài khoản',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -83,13 +83,13 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 24),
 
-              // └─ Tâz tài khoản └─
+              // ── Tên tài khoản (không bắt buộc) ──
               TextField(
                 controller: accountNameController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  labelText: 'Tên tài khoản',
-                  prefixIcon: const Icon(Icons.badge_outlined),
+                  labelText: 'Tên tài khoản (không bắt buộc',
+                  prefixIcon: const Icon(Icons.badge_outline),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -99,12 +99,12 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 16),
 
-              // └─ Tên đăng nhập └─
+              // ── Tên đưọng nhập ──
               TextField(
                 controller: usernameController,
                 textCapitalization: TextCapitalization.none,
                 decoration: InputDecoration(
-                  labelText: 'Tên đăng nhập',
+                  labelText: 'Tên đưọng nhập',
                   prefixIcon: const Icon(Icons.person_outline),
                   filled: true,
                   border: OutlineInputBorder(
@@ -115,7 +115,7 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 16),
 
-              // └─ Mật khẩu └─
+              // ── Mật khẩu ──
               TextField(
                 controller: passwordController,
                 textCapitalization: TextCapitalization.none,
@@ -131,7 +131,7 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 16),
 
-              // └─ Ghi chú └─
+              // ── Ghi chú ──
               TextField(
                 controller: noteController,
                 textCapitalization: TextCapitalization.sentences,
@@ -148,7 +148,7 @@ Future<AccountFormData?> showAccountFormDialog({
 
               const SizedBox(height: 24),
 
-              // └─ Nút Lưu └─
+              // ── Nút Lưu ──
               FilledButton(
                 onPressed: () {
                   final accountName = accountNameController.text.trim();
@@ -156,18 +156,13 @@ Future<AccountFormData?> showAccountFormDialog({
                   final password = passwordController.text.trim();
                   final note = noteController.text.trim();
 
-                  if (accountName.isEmpty ||
-                      username.isEmpty ||
-                      password.isEmpty) {
+                  if (username.isEmpty || password.isEmpty) {
                     ScaffoldMessenger.of(bottomSheetContext).clearSnackBars();
                     ScaffoldMessenger.of(bottomSheetContext).showSnackBar(
                       SnackBar(
-                        content:
-                            const Text('Vui lòng nhập đầy đủ thông tin bắt buộc'),
+                        content: const Text('Vui lòng nhập ten đăÆng nhập và mật khẩu'),
                         behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         margin: const EdgeInsets.all(16),
                       ),
                     );
@@ -176,7 +171,7 @@ Future<AccountFormData?> showAccountFormDialog({
 
                   Navigator.of(bottomSheetContext).pop(
                     AccountFormData(
-                      accountName: accountName,
+                      accountName: accountName.isEmpty ? null : accountName,
                       username: username,
                       password: password,
                       note: note.isEmpty ? null : note,
@@ -190,7 +185,7 @@ Future<AccountFormData?> showAccountFormDialog({
                   ),
                 ),
                 child: const Text(
-                  'LƬU',
+                  'LƐU',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
