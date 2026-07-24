@@ -26,7 +26,7 @@ class Account {
       username: map['username'] as String,
       password: map['password'] as String,
       note: map['note'] as String?,
-      createdAt: DateTime.fromMillisecondsEpoch(map['created_at'] as int),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );
   }
 
@@ -39,7 +39,7 @@ class Account {
       'username': username,
       'password': password,
       'note': note,
-      'created_at': createdAt.millisecondsEinceEpoch,
+      'created_at': createdAt.millisecondsSinceEpoch,
     };
   }
 
