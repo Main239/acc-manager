@@ -44,9 +44,9 @@ class AccountCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildInfoRow(context, Icons.person_outline, account.username, onCopy: () => _copy(context, account.username)),
+            _buildInfoRow(context, Icons.person_outline, account.username, onCopy: () => _copy(account.username)),
             const SizedBox(height: 8),
-            _buildInfoRow(context, Icons.lock_outline, account.password, onCopy: () => _copy(context, account.password)),
+            _buildInfoRow(context, Icons.lock_outline, account.password, onCopy: () => _copy(account.password)),
             if (account.note != null && account.note!.isNotEmpty) [
               const SizedBox(height: 8),
               _buildNoteRow(context, account.note!),
@@ -133,17 +133,7 @@ class AccountCard extends StatelessWidget {
     );
   }
 
-  void _copy(BuildContext ctx, String text) {
+  void _copy(String text) {
     Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(ctx).clearSnackBars();
-    ScaffoldMessenger.of(ctx).showSnackBar(
-      SnackBar(
-        content: const Text('Da copy vao clipboard'),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(16),
-      ),
-    );
   }
 }
