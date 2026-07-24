@@ -5,6 +5,7 @@ class Account {
   final String username;
   final String password;
   final String? note;
+  final bool isLoggedIn;
   final DateTime createdAt;
 
   const Account({
@@ -14,10 +15,10 @@ class Account {
     required this.username,
     required this.password,
     this.note,
+    this.isLoggedIn = false,
     required this.createdAt,
   });
 
-  /// Tạo từ Map (SQLite row)
   factory Account.fromMap(Map<String, dynamic> map) {
     return Account(
       id: map['id'] as int,
@@ -26,11 +27,11 @@ class Account {
       username: map['username'] as String,
       password: map['password'] as String,
       note: map['note'] as String?,
+      isLoggedIn: (map['is_logged_in'] as int) == 1,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );
   }
 
-  /// Chuyển thành Map để lưu SQLite
   Map<String, dynamic> toMap() {
     return {
       if (id != null) 'id': id,
@@ -39,19 +40,14 @@ class Account {
       'username': username,
       'password': password,
       'note': note,
+      'is_logged_in': isLoggedIn ? 1 : 0,
       'created_at': createdAt.millisecondsSinceEpoch,
     };
   }
 
-  /// Copy với các giá trị mới
   Account copyWith({
-    int? id,
-    int? categoryId,
-    String? accountName,
-    String? username,
-    String? password,
-    String? note,
-    DateTime? createdAt,
+    int? id, int? categoryId, String? accountName, String? username,
+    String? password, String? note, bool? isLoggedIn, DateTime? createdAt,
   }) {
     return Account(
       id: id ?? this.id,
@@ -60,6 +56,7 @@ class Account {
       username: username ?? this.username,
       password: password ?? this.password,
       note: note ?? this.note,
+      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       createdAt: createdAt ?? this.createdAt,
     );
   }
