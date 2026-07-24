@@ -21,12 +21,10 @@ jobs:
       - run: flutter pub get
       - name: Fix Android SDK & Generate Icons
         run: |
-          # Fix Android SDK version to 35
           sed -i 's/compileSdkVersion = flutter.compileSdkVersion/compileSdk = 35/g' android/app/build.gradle
           sed -i 's/targetSdkVersion = flutter.targetSdkVersion/targetSdk = 35/g' android/app/build.gradle
-          # Generate launcher icons
           flutter create --template=app --project-name=tmp_icon /tmp/tmp_icon
-          cp /rmp/tmp_icon/android/app/src/main/res/mipmap-*/ic_launcher.png android/app/src/main/res/mipmap-*/
+          cp -r /tmp/tmp_icon/android/app/src/main/res/* android/app/src/main/res/
           rm -rf /tmp/tmp_icon
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
