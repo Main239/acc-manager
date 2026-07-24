@@ -28,7 +28,7 @@ Future<AccountFormData?> showAccountFormDialog({required BuildContext context, A
       const SizedBox(height: 16),
       TextField(controller: passwordController, textCapitalization: TextCapitalization.none, decoration: InputDecoration(labelText: 'Mật khẩu', prefixIcon: const Icon(Icons.lock_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 16),
-      TextField(controller: noteController, textCapitalization: TextCapitalization.sentences, maxLines: 3, decoration: InputDecoration(labelText: 'Ghi chú (không bắt buộc), prefixIcon: const Icon(Icons.notes_rounded), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+      TextField(controller: noteController, textCapitalization: TextCapitalization.sentences, maxLines: 3, decoration: InputDecoration(labelText: 'Ghi chú (không bắt buộc)', prefixIcon: const Icon(Icons.notes_rounded), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 24),
       FilledButton(onPressed: () {
         final accountName = accountNameController.text.trim();
@@ -41,7 +41,7 @@ Future<AccountFormData?> showAccountFormDialog({required BuildContext context, A
           return;
         }
         Navigator.of(bottomSheetContext).pop(AccountFormData(accountName: accountName.isEmpty ? null : accountName, username: username, password: password, note: note.isEmpty ? null : note));
-      }, style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))), child: const Text('LưU', style: TextStyle(fontWeight: FontWeight.bold)),
+      }, style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))), child: const Text('L�⳯ vật', style: TextStyle(fontWeight: FontWeight.bold)),
     ])));
   });
 }
