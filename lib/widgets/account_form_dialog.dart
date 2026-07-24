@@ -37,11 +37,11 @@ Future<AccountFormData?> showAccountFormDialog({required BuildContext context, A
         final note = noteController.text.trim();
         if (username.isEmpty || password.isEmpty) {
           ScaffoldMessenger.of(bottomSheetContext).clearSnackBars();
-          ScaffoldMessenger.of(bottomSheetContext).showSnackBar(SnackBar(content: const Text('Vui lòng nhập tên đăng nhập và mật khẩu'), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
+          ScaffoldMessenger.of(bottomSheetContext).showSnackBar(SnackBar(content: const Text('Vui lonh nhap ten dang nhap va mat khau'), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
           return;
         }
         Navigator.of(bottomSheetContext).pop(AccountFormData(accountName: accountName.isEmpty ? null : accountName, username: username, password: password, note: note.isEmpty ? null : note));
-      }, style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))), child: const Text('L�⳯ vật', style: TextStyle(fontWeight: FontWeight.bold)),
+      }, style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))), child: const Text('LUU', style: TextStyle(fontWeight: FontWeight.bold)),
     ])));
   });
 }
