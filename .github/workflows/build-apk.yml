@@ -14,18 +14,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: subesh/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.27.4'
           channel: 'stable'
       - run: flutter pub get
-      - name: Fix Android SDK & Generate Icons
-        run: |
-          sed -i 's/compileSdkVersion = flutter.compileSdkVersion/compileSdk = 35/g' android/app/build.gradle
-          sed -i 's/targetSdkVersion = flutter.targetSdkVersion/targetSdk = 35/g' android/app/build.gradle
-          flutter create --template=app --project-name=tmp_icon /tmp/tmp_icon
-          cp -r /tmp/tmp_icon/android/app/src/main/res/* android/app/src/main/res/
-          rm -rf /tmp/tmp_icon
+      - run: sed -i 's/compileSdkVersion = flutter.compileSdkVersion/compileSdk = 35/g' android/app/build.gradle
+      - run: sed -i 's/targetSdkVersion = flutter.targetSdkVersion/targetSdk = 35/g' android/app/build.gradle
+      - run: flutter create --template=app --project-name=tmp_icon /tmp/tmp_icon
+      - run: mkdir -p android/app/src/main/res/mipmap-hdpi android/app/src/main/res/mipmap-mdpi android/app/src/main/res/mipmap-xhdpi android/app/src/main/res/mipmap-xxhdpi android/app/src/main/res/mipmap-xxxhdpi
+      - run: cp /tmp/tmp_icon/android/app/src/main/res/mipmap-hdpi/ic_launcher.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+      - run: cp /tmp/tmp_icon/android/app/src/main/res/mipmap-mdpi/ic_launcher.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+      - run: cp /tmp/tmp_icon/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+      - run: cp /tmp/tmp_icon/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+      - run: cp /tmp/tmp_icon/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
