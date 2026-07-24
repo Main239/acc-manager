@@ -22,7 +22,6 @@ Future<String?> showCategoryDialog({
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             labelText: 'Tên mục',
-            hintText: 'Ví dụ: Facebook, Zalo,...',
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
