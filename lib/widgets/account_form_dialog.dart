@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../models/account.dart';
 
 class AccountFormData {
-  final String? accountName;
+  final String accountName;
   final String username;
   final String password;
   final String? note;
-  const AccountFormData({this.accountName, required this.username, required this.password, this.note});
+  const AccountFormData({required this.accountName, required this.username, required this.password, this.note});
 }
 
 Future<AccountFormData?> showAccountFormDialog({required BuildContext context, Account? existingAccount}) async {
@@ -20,15 +20,15 @@ Future<AccountFormData?> showAccountFormDialog({required BuildContext context, A
     return Padding(padding: EdgeInsets.only(left: 20, right: 20, top: 24, bottom: MediaQuery.of(bottomSheetContext).viewInsets.bottom + 20), child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(2)))),
       const SizedBox(height: 20),
-      Text(isEditing ? 'Sửa tài khoản' : 'Thêm tài khoản', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+      Text(isEditing ? 'Sua tai khoan' : 'Them tai khoan', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
       const SizedBox(height: 24),
-      TextField(controller: accountNameController, textCapitalization: TextCapitalization.sentences, decoration: InputDecoration(labelText: 'Tên tài khoản (không bắt buộc)', prefixIcon: const Icon(Icons.badge_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+      TextField(controller: accountNameController, textCapitalization: TextCapitalization.sentences, decoration: InputDecoration(labelText: 'Ten tai khoan (khong bat buoc)', prefixIcon: const Icon(Icons.badge_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 16),
-      TextField(controller: usernameController, textCapitalization: TextCapitalization.none, decoration: InputDecoration(labelText: 'Tên đăng nhập', prefixIcon: const Icon(Icons.person_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+      TextField(controller: usernameController, textCapitalization: TextCapitalization.none, decoration: InputDecoration(labelText: 'Ten dang nhap', prefixIcon: const Icon(Icons.person_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 16),
-      TextField(controller: passwordController, textCapitalization: TextCapitalization.none, decoration: InputDecoration(labelText: 'Mật khẩu', prefixIcon: const Icon(Icons.lock_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+      TextField(controller: passwordController, textCapitalization: TextCapitalization.none, decoration: InputDecoration(labelText: 'Mat khau', prefixIcon: const Icon(Icons.lock_outline), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 16),
-      TextField(controller: noteController, textCapitalization: TextCapitalization.sentences, maxLines: 3, decoration: InputDecoration(labelText: 'Ghi chú (không bắt buộc)', prefixIcon: const Icon(Icons.notes_rounded), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+      TextField(controller: noteController, textCapitalization: TextCapitalization.sentences, maxLines: 3, decoration: InputDecoration(labelText: 'Ghi chu (khong bat buoc)', prefixIcon: const Icon(Icons.notes_rounded), filled: true, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
       const SizedBox(height: 24),
       FilledButton(onPressed: () {
         final accountName = accountNameController.text.trim();
@@ -37,10 +37,10 @@ Future<AccountFormData?> showAccountFormDialog({required BuildContext context, A
         final note = noteController.text.trim();
         if (username.isEmpty || password.isEmpty) {
           ScaffoldMessenger.of(bottomSheetContext).clearSnackBars();
-          ScaffoldMessenger.of(bottomSheetContext).showSnackBar(SnackBar(content: const Text('Vui lonh nhap ten dang nhap va mat khau'), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
+          ScaffoldMessenger.of(bottomSheetContext).showSnackBar(SnackBar(content: const Text('Vui long nhap ten dang nhap va mat khau'), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
           return;
         }
-        Navigator.of(bottomSheetContext).pop(AccountFormData(accountName: accountName.isEmpty ? null : accountName, username: username, password: password, note: note.isEmpty ? null : note));
+        Navigator.of(bottomSheetContext).pop(AccountFormData(accountName: accountName.isEmpty ? username : accountName, username: username, password: password, note: note.isEmpty ? null : note));
       }, style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))), child: const Text('LUU', style: TextStyle(fontWeight: FontWeight.bold)),
     ])));
   });
