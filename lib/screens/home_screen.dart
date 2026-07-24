@@ -99,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final confirmed = await showDeleteConfirmDialog(
       context: context,
       title: 'Xóa mục',
-      message: 'Bạn có chắc mŭ�ý xóa mục "${category.name}">\n'
-          'Tất cả tài khoản trong mục này cũng sẽ bị xóa.',
+      message: 'Bạn có chắc muốn xóa mục "${category.name}"?
+Tất cả tài khoản trong mục này cũng sẽ bị xóa.',
     );
 
     if (confirmed) {
