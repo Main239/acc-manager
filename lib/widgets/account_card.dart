@@ -17,14 +17,14 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: cs.outlineVariant.withValues(alpha: 0.5),
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
           width: 0.5,
         ),
       ),
@@ -39,25 +39,50 @@ class AccountCard extends StatelessWidget {
                 account.accountName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: cs.primary,
+                      color: colorScheme.primary,
                     ),
               ),
             ),
             const SizedBox(height: 12),
-            _buildInfoRow(context, Icons.person_outline, account.username, onCopy: () => _copy(account.username)),
+            _buildInfoRow(
+              context: context,
+              icon: Icons.person_outline,
+              value: account.username,
+              onCopy: () => _copyToClipboard(account.username),
+            ),
             const SizedBox(height: 8),
-            _buildInfoRow(context, Icons.lock_outline, account.password, onCopy: () => _copy(account.password)),
-            if (account.note != null && account.note!.isNotEmpty) [
+            _buildInfoRow(
+              context: context,
+              icon: Icons.lock_outline,
+              value: account.password,
+              onCopy: () => _copyToClipboard(account.password),
+            ),
+            if (account.note != null && account.note!.isNotEmpty) ...[
               const SizedBox(height: 8),
               _buildNoteRow(context, account.note!),
             ],
             const SizedBox(height: 8),
-            Divider(color: cs.outlineVariant.withValues(alpha: 0.3), height: 1),
+            Divider(
+              color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+              height: 1,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildActionButton(context, Icons.edit_outlined, 'Sửa', cs.primary, onEdit),
-                _buildActionButton(context, Icons.delete_outline, 'Xóa', cs.error, onDelete),
+                _buildActionButton(
+                  context: context,
+                  icon: Icons.edit_outlined,
+                  label: 'Sửa',
+                  color: colorScheme.primary,
+                  onTap: onEdit,
+                ),
+                _buildActionButton(
+                  context: context,
+                  icon: Icons.delete_outline,
+                  label: 'Xóa',
+                  color: colorScheme.error,
+                  onTap: onDelete,
+                ),
               ],
             ),
           ],
@@ -66,16 +91,28 @@ class AccountCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext ctx, IconData icon, String value, {required VoidCallback onCopy}) {
-    final cs = Theme.of(ctx).colorScheme;
+  Widget _buildInfoRow({
+    required BuildContext context,
+    required IconData icon,
+    required String value,
+    required VoidCallback onCopy,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
-        Icon(icon, size: 18, color: cs.onSurfaceVariant),
+        Icon(
+          icon,
+          size: 18,
+          color: colorScheme.onSurfaceVariant,
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             value,
-            style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -85,29 +122,35 @@ class AccountCard extends StatelessWidget {
           child: IconButton(
             onPressed: onCopy,
             icon: const Icon(Icons.copy, size: 16),
-            style: IconButton.styleFrom(foregroundColor: cs.primary),
+            style: IconButton.styleFrom(
+              foregroundColor: colorScheme.primary,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildNoteRow(BuildContext ctx, String note) {
-    final cs = Theme.of(ctx).colorScheme;
+  Widget _buildNoteRow(BuildContext context, String note) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: [
-          Icon(Icons.notes_rounded, size: 16, color: cs.onSurfaceVariant),
+          Icon(Icons.notes_rounded, size: 16, color: colorScheme.onSurfaceVariant),
           const SizedBox(width: 6),
           Expanded(
             child: Text(
               note,
-              style: Theme.of(ctx).textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant, fontStyle: FontStyle.italic),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontStyle: FontStyle.italic,
+                  ),
             ),
           ),
         ],
@@ -115,7 +158,13 @@ class AccountCard extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(BuildContext ctx, IconData icon, String label, Color color, VoidCallback onTap) {
+  Widget _buildActionButton({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
@@ -126,14 +175,20 @@ class AccountCard extends StatelessWidget {
           children: [
             Icon(icon, size: 18, color: color),
             const SizedBox(width: 4),
-            Text(label, style: Theme.of(ctx).textTheme.labelLarge?.copyWith(color: color, fontWeight: FontWeight.w600)),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _copy(String text) {
+  void _copyToClipboard(String text) {
     Clipboard.setData(ClipboardData(text: text));
   }
 }
