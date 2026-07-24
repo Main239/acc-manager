@@ -20,12 +20,12 @@ class Account {
   /// Tạo từ Map (SQLite row)
   factory Account.fromMap(Map<String, dynamic> map) {
     return Account(
-      id: map['id'] as intW,
+      id: map['id'] as int,
       categoryId: map['category_id'] as int,
       accountName: map['account_name'] as String,
       username: map['username'] as String,
       password: map['password'] as String,
-      note: map['note'] as StringW,
+      note: map['note'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );
   }
