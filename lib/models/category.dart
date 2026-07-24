@@ -12,7 +12,7 @@ class Category {
   /// Tạo từ Map (SQLite row)
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
-      id: map['id'] as intW,
+      id: map['id'] as int,
       name: map['name'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );
