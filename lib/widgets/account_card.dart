@@ -62,16 +62,30 @@ class AccountCard extends StatelessWidget {
               children: [
                 _buildActionButton(context: context, icon: Icons.edit_outlined, label: 'Sua',
                   color: colorScheme.primary, onTap: onEdit),
-                _buildActionButton(context: context,
-                  icon: isLogged ? Icons.check_circle : Icons.check_circle_outline,
-                  label: isLogged ? 'Da DN' : 'Chua DN',
-                  color: isLogged ? Colors.green : colorScheme.onSurfaceVariant,
-                  onTap: onToggleLogin),
+                _buildToggleButton(isLogged, onToggleLogin),
                 _buildActionButton(context: context, icon: Icons.delete_outline, label: 'Xoa',
                   color: colorScheme.error, onTap: onDelete),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildToggleButton(bool isLogged, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: isLogged ? Colors.green : Colors.red.withValues(alpha: 0.3),
+          border: Border.all(
+            width: 2.5,
+            color: isLogged ? Colors.green : Colors.red,
+          ),
         ),
       ),
     );
