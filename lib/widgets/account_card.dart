@@ -37,7 +37,7 @@ class AccountCard extends StatelessWidget {
 
   Widget _info({required BuildContext ctx, required IconData icon, required String value, required VoidCallback onCopy}) {
     final cs = Theme.of(ctx).colorScheme;
-    return Row(children: [Icon(icon, size: 18, color: cs.onSurfaceVariant), const SizedBox(width: 8), Expanded(child: Text(value, style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500), overflow: TextOverflow.ellipsis)), SizedBox(width: 36, height: 36, child: IconButton(onPressed: onCopy, icon: const Icon(Icons.copy, size: 16), style: IconButton.styleFrom(foregroundColor: cs.primary)))]);
+    return Row(children: [Icon(icon, size: 18, color: cs.onSurfaceVariant), const SizedBox(width: 8), Expanded(child: Text(value, style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500), overflow: TextOverflow.ellipsis)), SizedBox(width: 36, height: 36, child: IconButton(onPressed: onCopy, icon: Icon(Icons.copy, size: 16), style: IconButton.styleFrom(foregroundColor: cs.primary))]);
   }
 
   Widget _note(BuildContext ctx, String n) {
@@ -52,6 +52,6 @@ class AccountCard extends StatelessWidget {
   void _copy(BuildContext ctx, String t) {
     Clipboard.setData(ClipboardData(text: t));
     ScaffoldMessenger.of(ctx).clearSnackBars();
-    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: const Text('✆ Đã copy vào clipboard'), duration: const Duration(seconds: 2), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
+    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: const Text('윅 Đã copy vào clipboard'), duration: const Duration(seconds: 2), behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), margin: const EdgeInsets.all(16)));
   }
 }
