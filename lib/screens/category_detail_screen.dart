@@ -146,12 +146,12 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         leading: Icon(Icons.folder_rounded, color: colorScheme.primary, size: 28),
-        title: Text(sub.name, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight. w600)),
+        title: Text(sub.name, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
         trailing: PopupMenuButton<String>(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           onSelected: (v) { if (v == 'edit') _showEditSubCategoryDialog(sub); else if (v == 'delete') _showDeleteSubCategoryDialog(sub); },
           itemBuilder: (_) => [
-            const PopupMenuItem(value: 'edit', child: Row(children: [Icon(Icons.edit_outline, size: 18), SizedBox(width: 8), Text('Sua')])),
+            const PopupMenuItem(value: 'edit', child: Row(children: [Icon(Icons.edit_outlined, size: 18), SizedBox(width: 8), Text('Sua')])),
             const PopupMenuItem(value: 'delete', child: Row(children: [Icon(Icons.delete_outline, size: 18, color: Colors.red), SizedBox(width: 8), Text('Xoa', style: TextStyle(color: Colors.red))])),
           ],
         ),
