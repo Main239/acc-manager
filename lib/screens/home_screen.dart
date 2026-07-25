@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Category> _filteredCategories = [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
+  final Map<int, Map<String, int>> _stats = {};
 
   @override void initState() { super.initState(); _loadCategories(); }
   @override void dispose() { _searchController.dispose(); super.dispose(); }
@@ -24,7 +25,17 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _isLoading = true);
     try {
       final categories = await _categoryService.getRootCategories();
-      setState(() { _categories = categories; _filteredCategories = categories; _isLoading = false; });
+      final Map<int, Map<String, int>> stats = {};
+      for (final cat in categories) {
+        stats[cat.id!] = await _categoryService.getCategoryStats(categoryId: cat.id!);
+      }
+      setState(() {
+        _categories = categories;
+        _filteredCategories = categories;
+        _stats.clear();
+        _stats.addAll(stats);
+        _isLoading = false;
+      });
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
@@ -55,6 +66,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _openCategory(Category cat) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => CategoryDetailScreen(category: cat))).then((_) => _loadCategories());
+  }
+
+  Widget _buildStats(Category cat) {
+    final s = _stats[cat.id!];
+    if (s == null) return const SizedBox.shrink();
+    final parts = <String>[];
+    if (s['subCategories']! > 0) parts.add('${s['subCategories']} muc con');
+    if (s['accounts']! > 0) parts.add('${s['accounts']} tai khoan');
+    if (parts.isEmpty) parts.add('Trong');
+    return Text(
+      parts.join(' · '),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+    );
   }
 
   @override
@@ -99,8 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Container(width: 48, height: 48, decoration: BoxDecoration(color: colorScheme.primaryContainer, borderRadius: BorderRadius.circular(14)),
           child: Icon(Icons.folder_rounded, color: colorScheme.onPrimaryContainer, size: 24)),
         title: Text(cat.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
-        subtitle: Text('Tao ngay ${cat.createdAt.day}/${cat.createdAt.month}/${cat.createdAt.year}',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant)),
+        subtitle: _buildStats(cat),
         trailing: PopupMenuButton<String>(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           onSelected: (v) { if (v == 'edit') _showEditCategoryDialog(cat); else if (v == 'delete') _showDeleteCategoryDialog(cat); },
