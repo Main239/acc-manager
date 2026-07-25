@@ -44,6 +44,11 @@ class AccountService {
     }, where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<int> moveAccount({required int id, required int newCategoryId}) async {
+    final db = await _dbHelper.database;
+    return await db.update('accounts', {'category_id': newCategoryId}, where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<int> toggleLoginStatus({required int id, required bool isLoggedIn}) async {
     final db = await _dbHelper.database;
     return await db.update('accounts', {'is_logged_in': isLoggedIn ? 1 : 0},
